@@ -1,34 +1,38 @@
 <?php
-// Configurações do banco de dados
-$host = 'localhost';
-$db = 'whatsapp_messages';
-$user = 'root';
-$pass = '';
+include("../conexao.php");
 
-try {
-    // Conexão com o banco de dados
-    $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Paginação
+    // Número de registros por pagina
     $limit = 10;
+
+    //Obtenha o número da página atual a partir da URL ou defina como 1 se não tiver definido
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+    //Calcule o offset
     $offset = ($page - 1) * $limit;
+
+    // Conta o total de áudios
+    $totalStmt = $pdo->query("SELECT COUNT(*) as total FROM audio_messages");
+    $total = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
+    $totalPages = ceil($total / $limit);
 
     // Busca os áudios
     $stmt = $pdo->prepare("SELECT * FROM audio_messages LIMIT :limit OFFSET :offset");
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
+
+    //Exibir os registros de audios
     $audios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Conta o total de áudios
-    $totalStmt = $pdo->query("SELECT COUNT(*) FROM audio_messages");
-    $total = $totalStmt->fetchColumn();
-    $totalPages = ceil($total / $limit);
-} catch (PDOException $e) {
-    echo "Erro: " . $e->getMessage();
-}
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $audio = $_POST["nomeAudio"];
+    
+        $novoAudio = $conexao->prepare("INSERT INTO audio_messages (nomeAudio) VALUE (?)");
+        $novoAluno->execute([$audio]);
+    
+        header('Location: index.php');
+    }
 ?>
 
 <!DOCTYPE html>
