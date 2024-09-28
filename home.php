@@ -77,9 +77,9 @@ include("conexao.php");
             background-color: rgba(2, 80, 196, 0.7);
         }
 
-        .dropdown-menu:hover {
+        /* .dropdown-menu:hover {
             background-color: ;
-        }
+        } */
 
         /* SEÇÃO DOS CARDS ----------------------------- */
         .card {
