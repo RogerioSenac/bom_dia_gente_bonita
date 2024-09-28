@@ -10,7 +10,7 @@
     <div class="container">
         <h1>Upload de Mensagens de Áudio</h1>
         <form action="upload.php" method="POST" enctype="multipart/form-data">
-            <input type="file" name="audio" accept="audio/*" required>
+            <input type="file" name="audio[]" accept="audio/*" multiple required>
             <button type="submit">Enviar</button>
         </form>
     </div>
