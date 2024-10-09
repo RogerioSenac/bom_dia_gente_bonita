@@ -1,5 +1,5 @@
 <?php
-include("../conexao.php");
+include("conexao.php");
 
 
     // Número de registros por pagina
@@ -12,12 +12,12 @@ include("../conexao.php");
     $offset = ($page - 1) * $limit;
 
     // Conta o total de áudios
-    $totalStmt = $pdo->query("SELECT COUNT(*) as total FROM audio_messages");
+    $totalStmt = $conexao->query("SELECT COUNT(*) as total FROM audio_messages");
     $total = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
     $totalPages = ceil($total / $limit);
 
     // Busca os áudios
-    $stmt = $pdo->prepare("SELECT * FROM audio_messages LIMIT :limit OFFSET :offset");
+    $stmt = $conexao->prepare("SELECT * FROM audio_messages LIMIT :limit OFFSET :offset");
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
